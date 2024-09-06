@@ -1,0 +1,15 @@
+Protocol: my2AFC
+Maintainer: sumiya-kuroda
+AddOn: my2AFC.py
+IPAddress: 127.0.0.1
+Port: 8888
+DAQSampleRate: 9000
+DAQBufferSize: 1000
+Xrange_sec: 10
+Inputs: 
+  achn1: # This should match OSC address e.g., /achn1
+    Label: AI1
+    Yrange: [0,5]
+  achn2: 
+    Label: AI2
+    Yrange: [0,5]
