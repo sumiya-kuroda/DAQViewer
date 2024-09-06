@@ -10,3 +10,17 @@ Install following dependencies.
 
 ![image](https://github.com/sumiya-kuroda/DAQViewer/blob/gallery/gallery/bonsai_screenshot.PNG)
 
+## Python
+Install following dependencies.
+- `conda env create -f environment.yml`
+- NI-DAQmax version 19.0 (on Windows 10) or version XXX (on xubuntu)
+This example only shows about how to setup OSC. There are so many amazing examples explaining how one can interact with DAQ using Python, so please take a look at them. e.g. [SWC-Advanced-Microscopy/SimplePyScanner](https://github.com/SWC-Advanced-Microscopy/SimplePyScanner).
+
+## Matlab
+Tested using Matlab R2023a on Windows 10 as well as R2019b on xubuntu.
+Install following dependencies. 
+- Matlab >=R2019b
+- Matlab AddOn `MATLAB Support for MinGW-w64 C/C++/Fortran Compiler`
+- [oscmex](https://sourceforge.net/projects/oscmex/). For Windows 10, use [this precompiled script](https://github.com/sumiya-kuroda/oscmex/tree/master).
+
+To compile oscmex, you should follow [this guideline](https://stackoverflow.com/questions/14789656/linking-matlab-to-a-dll-library).
