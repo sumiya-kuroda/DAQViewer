@@ -13,14 +13,16 @@ Install following dependencies.
 ## Python
 Install following dependencies.
 - `conda env create -f environment.yml`
-- NI-DAQmax version 19.0 (on Windows 10) or version XXX (on xubuntu)
+- NI-DAQmax version 19.0 (on Windows 10) or version XXX (on xubuntu 16.04)
 This example only shows about how to setup OSC. There are so many amazing examples explaining how one can interact with DAQ using Python, so please take a look at them. e.g. [SWC-Advanced-Microscopy/SimplePyScanner](https://github.com/SWC-Advanced-Microscopy/SimplePyScanner).
 
 ## Matlab
-Tested using Matlab R2023a on Windows 10 as well as R2019b on xubuntu.
+Tested using Matlab R2023a on Windows 10 as well as R2019b on xubuntu 16.04.
 Install following dependencies. 
 - Matlab >=R2019b
-- Matlab AddOn `MATLAB Support for MinGW-w64 C/C++/Fortran Compiler`
+- Matlab AddOn `MATLAB Support for MinGW-w64 C/C++/Fortran Compiler` and `Data Acquisition Toolbox`
 - [oscmex](https://sourceforge.net/projects/oscmex/). For Windows 10, use [this precompiled script](https://github.com/sumiya-kuroda/oscmex/tree/master).
+
+For the DAQmx interaction, please check [this amazing example by Rob Campbell](https://github.com/BaselLaserMouse/ScanImageTools/blob/master/code/%2Bsitools/%40ai_recorder/ai_recorder.m).
 
 To compile oscmex, you should follow [this guideline](https://stackoverflow.com/questions/14789656/linking-matlab-to-a-dll-library).

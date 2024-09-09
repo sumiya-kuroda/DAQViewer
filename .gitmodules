@@ -1,0 +1,3 @@
+[submodule "daqlogger/matlab/+daqlogger/oscmex"]
+	path = daqlogger/matlab/+daqlogger/oscmex
+	url = https://github.com/sumiya-kuroda/oscmex
