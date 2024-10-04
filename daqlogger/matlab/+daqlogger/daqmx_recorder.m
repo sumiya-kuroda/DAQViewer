@@ -1,12 +1,14 @@
 classdef daqmx_recorder < handle
-    % daqlogger.daqmx_recorder - acquire data from analog input channels and record data only works with NI DAWmx.
+    % daqlogger.daqmx_recorder - acquire data from NI input channels and record data.
     %
-    % Adapted from sitools written by Rob Campbell - Basel, 2017
+    % Adapted from sitools.ai_recorder written by Rob Campbell - Basel, 2017
+    % https://github.com/BaselLaserMouse/ScanImageTools/blob/master/code/%2Bsitools/%40ai_recorder/ai_recorder.m
     %
     % Usage
     % >> DAQMXRecorder = daqlogger.daqmx_recorder()
     % >> DAQMXRecorder.AI_channels=0:1; % acquire data on first two channels
     % >> DAQMXRecorder.AI_channels=[0,1]; % acquire data on first two channels
+    % >> DAQMXRecorder.DI_channels={'port0/line0', 'port0/line1'}; % acquire data on first two channels
     % >> DAQMXRecordervoltageRange=1  % over +/- 1 volt
     % >> DAQMXRecorder.fname='test.bin';
     % >> DAQMXRecorder.start
@@ -27,6 +29,7 @@ classdef daqmx_recorder < handle
 
     properties (SetAccess=protected, Hidden=false)
         hTask % The DAQmx task handle is stored here
+        OSCSender % For OSC protocol
         dataType = 'int16' % The format we will write the data in to binary file daqmx_recorder.fname
         devType = 'DAQmx';  % device type, can be only "DAQmx"
     end 
@@ -36,10 +39,16 @@ classdef daqmx_recorder < handle
         fname = ''  % File name for logging data to disk as binary using type ai_recoder.dataType
         devName = 'Dev1'      % Name of the DAQ device to which we will connect
         AI_channels = []    % Analog input channels from which to acquire data. e.g. 0:3
-        DI_channels = {}     % Digital input channels from which to acquire data. e.g. 'port0/line0:1','port0','port1:2'
+        DI_channels = {}     % Digital input channels from which to acquire data. e.g. 'port0/line0'
         voltageRange = 5      % Scalar defining the range over which data will be digitized
         sampleRate = 9E3      % Analog input sample Rate in Hz
         sampleReadSize = 1000  % Read off this many samples then plot and log to disk
+
+        % OSC protocol
+        useOSC = true % whether users use OSC protocol
+        osc_ipadress = '127.0.0.1'
+        osc_port = 59729
+        osc_msg = {}
     end 
 
     properties (Hidden)
@@ -50,6 +59,9 @@ classdef daqmx_recorder < handle
     methods
         function obj = daqmx_recorder()
             success = obj.connectToDAQ;
+            if obj.useOSC
+                obj.connectOSC()
+            end
         end
 
         function varargout=connectToDAQ(obj)
@@ -108,7 +120,7 @@ classdef daqmx_recorder < handle
                         % * Set up digital inputs
                         obj.hTask.createAIVoltageChan(obj.devName, obj.AI_channels, [], obj.voltageRange*-1, obj.voltageRange,[],[],'DAQmx_Val_NRSE');
                         devNames = repelem({obj.devName},numel(obj.DI_channels));
-                        obj.hTask.createDIChan(strcat(devNames, obj.DI_channels),[],'DAQmx_Val_ChanPerLine')
+                        obj.hTask.createDIChan(strcat(devNames, '/', obj.DI_channels),[],'DAQmx_Val_ChanPerLine')
                     end
 
                     % * Set up a callback function to regularly read the buffer and plot it or write to disk
@@ -154,7 +166,10 @@ classdef daqmx_recorder < handle
             end
             try
                 obj.hTask.stop;
-                obj.closeDataFileForWriting
+                obj.closeDataFileForWriting;
+                if obj.useOSC
+                    osc_free_address(obj.OSCSender);
+                end
                 success=true;
             catch ME
                 obj.reportError(ME)
@@ -165,6 +180,8 @@ classdef daqmx_recorder < handle
                 varargout{1}=success;
             end
         end
+
+        connectOSC(obj)
     end 
 
     methods (Hidden)
@@ -219,11 +236,18 @@ classdef daqmx_recorder < handle
                     fprintf('Input buffer is empty!\n' );
                 else
 
-                    % for ii=1:size(evt.data,2)
-                    %     if ~isempty(obj.pltData{ii}) && isvalid(obj.pltData{ii})
-                    %         obj.pltData{ii}.YData=obj.data(:,ii); % Plot into the figure axes if they exist
-                    %     end
-                    % end
+                    for ii=1:size(evt.data,2)
+                        msg = struct( ...
+                            'path', obj.osc_msg(ii), ... 
+                            'data', {evt.data(:,ii)} ...
+                            );
+                
+                        err = osc_send(obj.OSCSender, msg); % send the message
+                        
+                        if ~isempty(err)
+                            obj.reportError(err)
+                        end
+                    end
                     if obj.fid>=0
                         fwrite(obj.fid, evt.data', obj.dataType);
                     end
