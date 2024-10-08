@@ -1,7 +1,7 @@
 % Set DAQLogger
 DAQMXRecorder = daqlogger.daqmx_recorder();
-DAQMXRecorder.AI_channels=[0,1]; % acquire data on first two channels
-DAQMXRecorder.fname='./test.bin';
+DAQMXRecorder.AI_channels=[0,3,4,7,8,9,10,11,12]; % acquire data on first two channels
+DAQMXRecorder.fname='./20241008.bin';
 DAQMXRecorder.connectToDAQ;
 % Start the task
 DAQMXRecorder.start
@@ -11,6 +11,6 @@ DAQMXRecorder.stop
 DAQMXRecorder.delete
 
 % Open the bin file
-fid = fopen('./test.bin','r');
-[data,count] = fread(fid,[3,inf],'double');
+fid = fopen('./20241008.bin','r');
+[data,count] = fread(fid,[10,inf],'double');
 fclose(fid);

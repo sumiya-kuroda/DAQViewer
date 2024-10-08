@@ -102,7 +102,7 @@ classdef daqmx_recorder < handle
 
             % Is the DAQ to which we are planning to connect present on the system?
             theseDevices = daq.getDevices; % supports only one for now
-            theseDevices = strsplit(theseDevices.ID,', ');
+            theseDevices = {theseDevices.ID};
             if isempty(strcmp(obj.devName, theseDevices) )
                 fprintf('\nERROR: Device "%s" not present on system. Can not connect to DAQ. ',obj.devName)
                 fprintf('Available devices are:\n')
