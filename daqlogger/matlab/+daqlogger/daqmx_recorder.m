@@ -1,7 +1,7 @@
 classdef daqmx_recorder < handle
     % daqlogger.daqmx_recorder - acquire data from NI input channels and record data.
     %
-    % Adapted from sitools.ai_recorder written by Rob Campbell - Basel, 2017
+    % Adapted from sitools.ai_recorder written by Rob Campbell and modified with the help from Andrei Khilkevich
     % https://github.com/BaselLaserMouse/ScanImageTools/blob/master/code/%2Bsitools/%40ai_recorder/ai_recorder.m
     %
     % Usage
