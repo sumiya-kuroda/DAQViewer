@@ -17,3 +17,4 @@ dependencies:
     # - osc4py3-1.0.8
     - defopt
     - pyyaml
+    - nidaqmx==1.0.1 # For DAQLogger Python scripts
