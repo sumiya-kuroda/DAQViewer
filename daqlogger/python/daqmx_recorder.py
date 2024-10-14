@@ -12,8 +12,8 @@ class DAQLogger():
     def __init__(self, dev_name:str = 'Dev2', ai_channels:list = [], 
                  voltage_range:float = 5, ci_channels = 'ctr0', 
                  sample_rate = 9000, sample_size = 1000, 
-                 save_file_location_ai:Path = None,
-                 save_file_location_ci:Path = None,
+                 save_file_location_ai:str = '',
+                 save_file_location_ci:str = '',
                  use_osc = True, osc_ip = "127.0.0.1", osc_port = "8888",
                  osc_address_ai = [], osc_address_ci = [],
                  autoconnect=True):
@@ -34,11 +34,11 @@ class DAQLogger():
         self.osc_address_ai = osc_address_ai
         self.osc_address_ci = osc_address_ci
 
-        self.save_file_location_ai = save_file_location_ai
-        self.save_file_location_ci = save_file_location_ci
-        if self.save_file_location_ai is not None:
+        self.save_file_location_ai = Path(save_file_location_ai)
+        self.save_file_location_ci = Path(save_file_location_ci)
+        if save_file_location_ai != '':
             self.outFile_ai = open(self.save_file_location_ai, 'wb')
-        if self.save_file_location_ci is not None:
+        if save_file_location_ci != '':
             self.outFile_ci = open(self.save_file_location_ci, 'wb')
 
         if autoconnect:
