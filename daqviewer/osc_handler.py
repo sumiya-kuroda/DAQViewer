@@ -21,8 +21,10 @@ class OSCStreamer(object):
     def _initialize_dispatcher(self) -> None:
         self.dispatcher = Dispatcher()
         for k,v in  self.config['Inputs'].items():
-            # self.dispatcher.map("/{}".format(k), print_handler)
+            self.dispatcher.map("/{}".format(k), print_handler)
             self.dispatcher.map("/{}".format(k), self._connectTTLEvent)
+        self.dispatcher.map("/expid", self._getExperimentID)
+        self.dispatcher.map("/expid", print_handler)
 
     def _connectTTLEvent(self, address: str, *args: Any) -> None:
         # TODO check float or int
@@ -34,7 +36,8 @@ class OSCStreamer(object):
         self.multidata_connector[address[1:]].cb_append_data_point(value, time.time())
 
     def _getExperimentID(self, address: str, *args: str) -> None:
-        if address[0] == "/expid":  # Check syntax
+        # Check that address starts with filter
+        if not address[0] == "/":  # Check syntax
             return
 
         value = args[0]
