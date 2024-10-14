@@ -13,8 +13,12 @@ Install following dependencies.
 ## Python
 Install following dependencies.
 - `conda env create -f environment.yml`
-- NI-DAQmax version 19.0 (on Windows 10) or version XXX (on xubuntu 16.04)
-This example only shows about how to setup OSC. There are so many amazing examples explaining how one can interact with DAQ using Python, so please take a look at them. e.g. [SWC-Advanced-Microscopy/SimplePyScanner](https://github.com/SWC-Advanced-Microscopy/SimplePyScanner).
+- NI-DAQmax version 19.0 (on Windows 10) or version 2024Q3-stream (on xubuntu 22.04.5)
+
+There are basically two major scripts in this folder.
+- `daqmx_recorder.py` has the recorder class `DAQLogger`. See `example_task.py` for how to use it with/without OSC protocol.
+- `CallPyDAQLogger.m` is a wrapper function to call this `DAQLogger` from Matlab. Usesul for a very specific case where you are using Matlab, but you cannot communicate with NI-DAQ using `Data Acquisition Toolbox`. (e.g., You are Linux user.)
+There are so many amazing examples explaining how one can interact with DAQ using Python, so please take a look at them. e.g. [SWC-Advanced-Microscopy/SimplePyScanner](https://github.com/SWC-Advanced-Microscopy/SimplePyScanner).
 
 ## Matlab
 Tested using Matlab R2019b on Windows 10. As of Sep 2024, Matlab's `Data Acquisition Toolbox` only works with Windows.
