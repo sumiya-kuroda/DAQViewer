@@ -26,6 +26,8 @@ class ViewerTab(QWidget):
         for i, (key, value) in enumerate(config['Inputs'].items()):
             print('Setting plotting area for {}: {}'.format(key,value['Label']))
             label_widget = QLabel(value['Label'])
+            label_widget.setFixedSize(100, 65)
+            # label_widget.setFont(QFont('Times', 10)) 
             plot_curve = LiveLinePlot()
             plot_widget = MiniLivePlotWidget(plot=plot_curve, 
                                               # x_range_controller=LiveAxisRange(roll_on_tick=self.x_points_range)),
@@ -58,14 +60,12 @@ class ViewerTab(QWidget):
 
 class MiniLivePlotWidget(LivePlotWidget):
     def __init__(self, parent=None, plot=None, y_range=None, **kwargs):
-        super().__init__(parent=parent, plot=plot, background='#202124', 
-                         **kwargs)
         bottom_axis = LiveAxis("bottom", **{Axis.TICK_FORMAT: Axis.TIME})
         super().__init__(parent=parent, plot=plot, background='#202124', axisItems={'bottom': bottom_axis},
                          **kwargs)
         if y_range is not None:
             self.y_range_controller=LiveAxisRange(fixed_range=y_range)
-        self.setFixedHeight(100)
+        self.setFixedHeight(65)
 
         self.plot = plot
         self.addItem(self.plot)
