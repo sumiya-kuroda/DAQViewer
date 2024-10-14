@@ -18,3 +18,4 @@ dependencies:
     - defopt
     - pyyaml
     - nidaqmx==1.0.1 # For DAQLogger Python scripts
+    - matplotlib==3.9.2 # For DAQLogger Python scripts (analysis)

@@ -102,7 +102,6 @@ class AnalogInput:
             self.data.append(data)
 
             self.outfile.write(data.tostring())
-            # self.data.astype(np.uint32).tostring()
             self.data_written += n_samples
         except daq.DaqError:
             self.stop()
@@ -122,7 +121,6 @@ class AnalogInput:
             self.data.append(data)
 
             self.outfile.write(data.tostring())
-            # self.data.astype(np.uint32).tostring()
             self.data_written += n_samples
 
             for i, b in enumerate(buffer.tolist()):
@@ -233,7 +231,6 @@ class AngularEncoder:
             self.data.append(data)
 
             self.outfile.write(data.tostring())
-            # self.data.astype(np.uint32).tostring()
             self.data_written += n_samples
         except daq.DaqError:
             self.stop()
@@ -253,7 +250,6 @@ class AngularEncoder:
             self.data.append(data)
 
             self.outfile.write(data.tostring())
-            # self.data.astype(np.uint32).tostring()
             self.data_written += n_samples
 
             self._client.send_message(self.osc_address[0], buffer) 

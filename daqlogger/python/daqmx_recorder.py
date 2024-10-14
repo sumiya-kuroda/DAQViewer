@@ -7,6 +7,7 @@ class DAQLogger():
     # Inspired from
     # https://github.com/SWC-Advanced-Microscopy/SimplePyScanner
     # - Rob Campbell
+    # Output: binary file with the data formatted as np.float64
 
     def __init__(self, dev_name:str = 'Dev2', ai_channels:list = [], 
                  voltage_range:float = 5, ci_channels = 'ctr0', 
@@ -81,6 +82,9 @@ class DAQLogger():
             if self.use_osc:
                 self.task_CIs.client = self.client
                 self.task_CIs.osc_address = self.osc_address_ci
+
+    def send_oscmsg(self, address, msg):
+        self.client.send_message(address, msg) 
 
     def start_acquisition(self):
         print('Stating the task!')
