@@ -13,3 +13,8 @@ def find_version(*file_paths):
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
+
+def normalize_angle_np(angles):
+    # Normalize angles using modulo 360
+    normalized_angles = angles % 360
+    return normalized_angles

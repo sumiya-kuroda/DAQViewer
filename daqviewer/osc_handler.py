@@ -1,5 +1,6 @@
 import time
 from typing import Any
+from utils import normalize_angle_np
 
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import ThreadingOSCUDPServer
@@ -33,6 +34,11 @@ class OSCStreamer(object):
             return
 
         value = args[0]
+        if 'ctr0' in value: # because ctr0 will be running wheel
+            value = normalize_angle_np(value)
+        else:
+            pass
+
         self.multidata_connector[address[1:]].cb_append_data_point(value, time.time())
 
     def _getExperimentID(self, address: str, *args: str) -> None:
