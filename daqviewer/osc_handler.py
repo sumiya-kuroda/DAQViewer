@@ -22,10 +22,10 @@ class OSCStreamer(object):
     def _initialize_dispatcher(self) -> None:
         self.dispatcher = Dispatcher()
         for k,v in  self.config['Inputs'].items():
-            self.dispatcher.map("/{}".format(k), print_handler)
+            # self.dispatcher.map("/{}".format(k), print_handler)
             self.dispatcher.map("/{}".format(k), self._connectTTLEvent)
         self.dispatcher.map("/expid", self._getExperimentID)
-        self.dispatcher.map("/expid", print_handler)
+        # self.dispatcher.map("/expid", print_handler)
 
     def _connectTTLEvent(self, address: str, *args: Any) -> None:
         # TODO check float or int
@@ -34,7 +34,7 @@ class OSCStreamer(object):
             return
 
         value = args[0]
-        if 'ctr0' in value: # because ctr0 will be running wheel
+        if 'ctr0' in address: # because ctr0 will be running wheel
             value = normalize_angle_np(value)
         else:
             pass
